@@ -8,7 +8,6 @@ import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-
 def tupleMaxValue(values):
     max = 0
     for element in values:
@@ -16,7 +15,6 @@ def tupleMaxValue(values):
             max = element
     max = int(max[0])
     return max
-
 
 itemid = 0
 file = ''
@@ -116,17 +114,20 @@ try:
                 cursor.execute(
                     "SELECT charttime FROM result WHERE subject_id = %s AND itemid = %s ORDER BY charttime;", (subject_id, itemid))
                 times = cursor.fetchall()
-                # print "Once upon the time: ", str(times[0])
-                # date = datetime.datetime(times[0], "%Y-%m-%d %H:%M")
-                # dates = time.mktime()
-                # print "Dates: ", date
-                # plt.plot(times)
-                # plt.xticks(range(0, n+1 , 1))
-                plt.xticks()
+
+                level = []
+                for i in range(len(times)):
+                    level.append(times[i][0])
+
+                level1 = []
+                for i in range(len(level)):
+                   level1.append(level[i].strftime("%Y.%m.%d %H:%M"))
 
                 max = tupleMaxValue(values)
                 print "Legnagyobb ertek: ", max
-                plt.yticks(range(0, max+1, 5))
+
+                plt.xticks(range(1, len(level1), 5), level1)
+                plt.yticks(range(0, max+5, 5))
                 plt.grid(True)
                 plt.show()
                 print "-----------------------------"
